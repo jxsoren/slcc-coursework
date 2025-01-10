@@ -18,6 +18,6 @@ slcc-coursework/
 └── CSIS_1550_SQL/
     ├── assignments/
     ├── projects/
-    └── notes/## Index
+    └── notes/
 ```
 
