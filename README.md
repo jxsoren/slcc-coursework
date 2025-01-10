@@ -2,13 +2,17 @@
 
 Repository containing my coursework and projects from Salt Lake Community College.
 
-## Current Courses
+## Current Courses (Spring 2024)
 
-### Spring 2024
-- CSIS 1400 - Fundamentals of Programming (Java)
-- CSIS 1550 - SQL 
+- **CSIS 1400 - Fundamentals of Programming**
+  - Language: Java
+  - Topics: Object-oriented programming, control structures, methods
 
-## Repository Structure
+- **CSIS 1550 - SQL**
+  - Focus: Database fundamentals and SQL programming
+  - Tools: MySQL/SQL Server
+  - Topics: Query writing, database design, data manipulation## Repository Structure
+
 ```bash
 slcc-coursework/
 ├── CSIS_1400_FoP/
