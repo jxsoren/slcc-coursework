@@ -13,6 +13,8 @@ Repository containing my coursework and projects from Salt Lake Community Colleg
   - Tools: MySQL/SQL Server
   - Topics: Query writing, database design, data manipulation## Repository Structure
 
+## Repository Structure
+
 ```bash
 slcc-coursework/
 ├── CSIS_1400_FoP/
