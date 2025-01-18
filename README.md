@@ -15,15 +15,17 @@ Repository containing my coursework and projects from Salt Lake Community Colleg
 
 ## Repository Structure
 
-```bash
+```plaintext
 slcc-coursework/
 ├── CSIS_1400_FoP/
 │   ├── assignments/
-│   ├── projects/
-│   └── notes/
+│   ├── labs/
+│   ├── notes/
+│   └── index.md
 └── CSIS_1550_SQL/
     ├── assignments/
-    ├── projects/
-    └── notes/
+    ├── labs/
+    ├── notes/
+    └── index.md
 ```
 
