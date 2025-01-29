@@ -1,0 +1,10 @@
+# Testing Java Directory
+JavaPlayground
+
+# InteliJ IDEA config files
+*.idea
+*.iml
+
+# Java
+out*
+
