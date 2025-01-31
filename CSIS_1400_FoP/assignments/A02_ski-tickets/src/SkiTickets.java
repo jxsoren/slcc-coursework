@@ -26,7 +26,7 @@ public class SkiTickets {
 
         // Print Invoice
         System.out.print("\n\n");
-        System.out.printf("Invoice for %s%n%n", customerName);
+        System.out.printf("Invoice for %s%s%n%n", customerName, ":");
 
         System.out.printf("Adult tickets  %-2s .. $ %.2f%n", adultTicketCount, adultTicketTotalCost);
         System.out.printf("Youth tickets  %-2s .. $ %.2f%n", youthTicketCount, youthTicketTotalCost);
