@@ -8,3 +8,6 @@ JavaPlayground
 # Java
 out*
 
+# macOS
+.DS_Store
+
