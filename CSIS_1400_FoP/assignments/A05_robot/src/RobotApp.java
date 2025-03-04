@@ -116,12 +116,12 @@ public class RobotApp {
         // create expression to calculate the number of moves required
         // in a WxH grid
 
-        // LxH-2 ??
+        String numberOfMovesExpression = "(L + W) - 2";
 
         // create formatted string to show number of rooms
         // and expression of moves
 
-        String numberOfMovesExpression = String.format("%dn", 2);
+
         String robotOutput = String.format("%d rooms %s moves",
                 numberOfRooms,
                 numberOfMovesExpression
@@ -131,7 +131,6 @@ public class RobotApp {
     }
 
     private static void challenge3(Robot robot) {
-        // TODO: Solve challenge 3 and update text below
 
         robot.say(3 + " rooms {expression of n} moves");
     }
