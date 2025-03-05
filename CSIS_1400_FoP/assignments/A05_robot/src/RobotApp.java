@@ -24,13 +24,13 @@ public class RobotApp {
         // robot in the south-west corner
         int w1 = 5;
         int h1 = 7;
-        Robot robot2 = new Robot(w1, h1, 0, h1 - 1);
-        challenge2(robot2);
+//        Robot robot2 = new Robot(w1, h1, 0, h1 - 1);
+//        challenge2(robot2);
 
         // square nxn grid;
         int n2 = 6;
-//        Robot robot3 = new Robot(n2, n2, 3, 1);
-//        challenge3(robot3);
+        Robot robot3 = new Robot(n2, n2, 3, 1);
+        challenge3(robot3);
 
         // rectangular grid with width w and height h
         // robot's starting position: 4 over, 2 down
@@ -41,61 +41,37 @@ public class RobotApp {
     }
 
     private static void challenge1(Robot robot) {
-        // Init room length and width
-        int roomLength = 1;
-        int roomWidth = 1;
+        int roomHeight = 1;
 
-        // the robot is in the bottom left-most corner (south-west), so only direction
-        // to get room length, keep walking north until there are no more doors
         while (robot.check('N')) {
             robot.go('N');
-            roomLength++;
+            roomHeight++;
         }
 
-        // now that we know we're at the north-most point, we can go east to get length
-        // keep walking East until there are no more doors
-        while (robot.check('E')) {
-            robot.go('E');
-            roomWidth++;
-        }
+        // Since it's a square room, you only need to know
+        // a single dimension to get the amount of rooms (n * n)
+        int numberOfRooms = roomHeight * roomHeight;
 
-        System.out.println(roomLength);
-        System.out.println(roomWidth);
-
-        // calculate area of room
-        int numberOfRooms = roomLength * roomWidth;
-
-        // -1 for 1 less door than one dimension of room
-        // moves to get length = (roomLength - 1)
-        // moves to get height = (roomHeight - 1)
-        // 2n-2
+        // 2(n - 1) = 2n - 2
         String roomExpression = String.format("%dn-%d", 2, 2);
-
         String robotOutput = String.format("%d rooms %s moves", numberOfRooms, roomExpression);
+
         robot.say(robotOutput);
     }
 
     private static void challenge2(Robot robot) {
-        // init dimension vars
         int dim1 = 1;
         int dim2 = 1;
-
-        // keep walking north until you've reached the end
 
         while (robot.check('N')) {
             robot.go('N');
             dim1++;
         }
 
-        // walk east until you've reached the end
-
         while (robot.check('E')) {
             robot.go('E');
             dim2++;
         }
-
-        // figure out which of the two saved values is higher
-        // the higher one is the length and the lower is width
 
         int length;
         int width;
@@ -108,31 +84,54 @@ public class RobotApp {
             width = dim1;
         }
 
-        // multiply the length by the height to get the number of rooms (area)
-        // store value
-
         int numberOfRooms = length * width;
 
-        // create expression to calculate the number of moves required
-        // in a WxH grid
-
+        // (L - 1) + (W - 1) = (L + W) - 2
         String numberOfMovesExpression = "(L + W) - 2";
-
-        // create formatted string to show number of rooms
-        // and expression of moves
-
-
-        String robotOutput = String.format("%d rooms %s moves",
-                numberOfRooms,
-                numberOfMovesExpression
-        );
+        String robotOutput = String.format("%d rooms %s moves", numberOfRooms, numberOfMovesExpression);
 
         robot.say(robotOutput);
     }
 
     private static void challenge3(Robot robot) {
+        char nextDirection = '0';
+        boolean isDoor = robot.check('N') || robot.check('E') || robot.check('S') || robot.check('W');
 
-        robot.say(3 + " rooms {expression of n} moves");
+        while (isDoor) {
+            if (!robot.check('N')) {
+                nextDirection = 'S';
+                break;
+            }
+
+            if (!robot.check('E')) {
+                nextDirection = 'W';
+                break;
+            }
+
+            if (!robot.check('S')) {
+                nextDirection = 'N';
+                break;
+            }
+
+            if (!robot.check('W')) {
+                nextDirection = 'E';
+                break;
+            }
+        }
+
+        int roomSize = 1;
+
+        while (robot.check(nextDirection)) {
+            robot.go(nextDirection);
+            roomSize++;
+        }
+
+        int numberOfRooms = roomSize * roomSize;
+
+        String numberOfMovesExpression = "";
+        String robotOutput = String.format("%d rooms %s moves", numberOfRooms, numberOfMovesExpression);
+
+        robot.say(robotOutput);
     }
 
     private static void challenge4(Robot robot) {
