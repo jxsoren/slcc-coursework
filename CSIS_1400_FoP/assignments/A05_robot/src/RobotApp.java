@@ -12,20 +12,20 @@
 public class RobotApp {
     public static void main(String[] args) {
         // square 4x4 grid to demo how the robot can be controlled
-//        Robot robot = new Robot(4, 4, 3, 0);
-//        demo(robot);
+        //        Robot robot = new Robot(4, 4, 3, 0);
+        //        demo(robot);
 
         // square nxn grid with the robot in the south-west corner
         int n = 5;
-//        Robot robot1 = new Robot(n, n, 0, n - 1);
-//        challenge1(robot1);
+        //        Robot robot1 = new Robot(n, n, 0, n - 1);
+        //        challenge1(robot1);
 
         // rectangular grid with width w and height h
         // robot in the south-west corner
         int w1 = 5;
         int h1 = 7;
-//        Robot robot2 = new Robot(w1, h1, 0, h1 - 1);
-//        challenge2(robot2);
+        //        Robot robot2 = new Robot(w1, h1, 0, h1 - 1);
+        //        challenge2(robot2);
 
         // square nxn grid;
         int n2 = 6;
@@ -36,8 +36,8 @@ public class RobotApp {
         // robot's starting position: 4 over, 2 down
         int w2 = 8;
         int h2 = 4;
-//        Robot robot4 = new Robot(w2, h2, 4, 2);
-//        challenge4(robot4);
+        //        Robot robot4 = new Robot(w2, h2, 4, 2);
+        //        challenge4(robot4);
     }
 
     private static void challenge1(Robot robot) {
@@ -94,65 +94,56 @@ public class RobotApp {
     }
 
     private static void challenge3(Robot robot) {
-        char nextDirection = '0';
-        boolean isDoor = robot.check('N') || robot.check('E') || robot.check('S') || robot.check('W');
+        char nextDirection = 0;
+        int roomDimension = 1;
 
-        while (isDoor) {
-            if (!robot.check('N')) {
-                nextDirection = 'S';
-                break;
-            }
+        boolean northWall = !robot.check('N');
+        boolean eastWall = !robot.check('E');
+        boolean southWall = !robot.check('S');
+        boolean westWall = !robot.check('W');
+        boolean wallPresent = northWall || eastWall || southWall || westWall;
 
-            if (!robot.check('E')) {
-                nextDirection = 'W';
-                break;
-            }
+        // Get robot to the wall if not already there
+        if (!wallPresent) {
+            nextDirection = 'N';
 
-            if (!robot.check('S')) {
-                nextDirection = 'N';
-                break;
-            }
-
-            if (!robot.check('W')) {
-                nextDirection = 'E';
-                break;
+            while (robot.check(nextDirection)) {
+                robot.go(nextDirection);
             }
         }
 
-        int roomSize = 1;
+        // Invert direction of wall to go the other way
+        if (!robot.check('N')) {
+            nextDirection = 'S';
+        } else if (!robot.check('E')) {
+            nextDirection = 'W';
+        } else if (!robot.check('S')) {
+            nextDirection = 'N';
+        } else if (!robot.check('W')) {
+            nextDirection = 'E';
+        }
 
+        // Walk opposite direction and start dimension counter
         while (robot.check(nextDirection)) {
             robot.go(nextDirection);
-            roomSize++;
+            roomDimension++;
         }
 
-        int numberOfRooms = roomSize * roomSize;
-
-        String numberOfMovesExpression = "";
+        int numberOfRooms = roomDimension * roomDimension;
+        String numberOfMovesExpression = "???";
         String robotOutput = String.format("%d rooms %s moves", numberOfRooms, numberOfMovesExpression);
-
         robot.say(robotOutput);
     }
 
     private static void challenge4(Robot robot) {
-        // TODO: Solve challenge 4 and update text below
 
-        robot.say(3 + " rooms {expression of w and h} moves");
+        // One side is 2x larger than the other
+
+
+        int numberOfRooms = 0;
+        String numberOfMovesExpression = "???";
+        String robotOutput = String.format("%d rooms %s moves", numberOfRooms, numberOfMovesExpression);
+        robot.say(robotOutput);
     }
 
-    // This method briefly demonstrates how the robot can be controlled.
-    // Note that the message is not correct and needs to be fixed.
-    private static void demo(Robot robot) {
-        int count = 10;
-        robot.go('S');
-        robot.go('W');
-        if (robot.check('N')) {
-            robot.go('N');
-            count++;
-        }
-        robot.go('E');
-        robot.go('E'); // uncomment this line and see what happens
-
-        robot.say(count + " rooms 2n + 5 moves");    // incorrect message
-    }
 }
