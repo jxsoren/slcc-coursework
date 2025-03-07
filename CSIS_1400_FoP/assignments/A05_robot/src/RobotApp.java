@@ -34,9 +34,9 @@ public class RobotApp {
 
         // rectangular grid with width w and height h
         // robot's starting position: 4 over, 2 down
-        int w2 = 8;
-        int h2 = 4;
-        Robot robot4 = new Robot(w2, h2, 7, 3);
+        int w2 = 10;
+        int h2 = 5;
+        Robot robot4 = new Robot(w2, h2, 1, 2);
         challenge4(robot4);
     }
 
@@ -130,24 +130,22 @@ public class RobotApp {
     }
 
     private static void challenge4(Robot robot) {
-        char currentDirection;
+        char currentDirection = 'N';
 
         int roomDimension1 = 1;
         int roomDimension2 = 1;
 
         // Get robot to the wall if not already there
         if (allDoorRoom(robot)) {
-            currentDirection = 'N';
-
             while (robot.check(currentDirection)) {
                 robot.go(currentDirection);
             }
         }
 
-        // Need to know which wall I'm at
-        // Todo: Think of the case where you spawn in a corner.
-        // The order of the logic that you set within the wallDirection method
-        // matters, as it will check North, East, South, West, in that order.
+        // Todo:
+        //      Think of the case where you spawn in a corner.
+        //      The order of the logic that you set within the wallDirection method
+        //      matters, as it will check North, East, South, West, in that order.
 
         char wallDirection = wallDirection(robot);
 
@@ -160,24 +158,23 @@ public class RobotApp {
             roomDimension1++;
         }
 
-        // As soon as you hit the end of that wall, walk
-        // adjacent direction of previous direction
         currentDirection = adjacentDirection(currentDirection);
-
-        // If you hit a wall before you can definitively know that
-        // dim 2 is shorter or larger than dim 1, you'll need to
-        // double back and walk until you hit a wall or until you
-        // know that dim2 is larger than dim1
-
-        // Think about the case where you start in a corner
-        // Go to the opposite corner and then go the adjacent way
-        // then need to double back, as it's less than the dim1, but
-        // you already reached the end
 
         boolean doubledBackedOnWall = false;
 
-        while (roomDimension1 > roomDimension2) {
+
+        // Todo:
+        //      Think of this problem more simply. You either need to find a corner
+        //      or walk longer than the current recorded dim1
+
+
+        while (roomDimension1 >= roomDimension2) {
             if (doubledBackedOnWall && hitDestinedWall(robot, currentDirection)) {
+                break;
+            }
+
+
+            if (inCorner(robot) && hitDestinedWall(robot, currentDirection)) {
                 break;
             }
 
@@ -194,10 +191,8 @@ public class RobotApp {
             roomDimension2++;
         }
 
-        // At this point, we can assume that we've hit a wall
-
-        int length = 0;
-        int width = 0;
+        int length;
+        int width;
 
         if (roomDimension2 > roomDimension1) {
             length = 2 * roomDimension1;
@@ -233,7 +228,7 @@ public class RobotApp {
     }
 
     public static boolean northEastCorner(Robot robot) {
-        return northWall(robot) && westWall(robot);
+        return northWall(robot) && eastWall(robot);
     }
 
     public static boolean northWestCorner(Robot robot) {
@@ -248,7 +243,7 @@ public class RobotApp {
         return southWall(robot) && westWall(robot);
     }
 
-    private static boolean hitCorner(Robot robot, char direction) {
+    private static boolean inCorner(Robot robot) {
         return northEastCorner(robot) || northWestCorner(robot) || southEastCorner(robot) || southWestCorner(robot);
     }
 
@@ -287,6 +282,10 @@ public class RobotApp {
     }
 
     private static char wallDirection(Robot robot) {
+        if (inCorner(robot)) {
+
+        }
+
         if (northWall(robot)) {
             return 'N';
         } else if (eastWall(robot)) {
