@@ -16,28 +16,28 @@ public class RobotApp {
         //        demo(robot);
 
         // square nxn grid with the robot in the south-west corner
-        int n = 5;
+        //        int n = 5;
         //        Robot robot1 = new Robot(n, n, 0, n - 1);
         //        challenge1(robot1);
 
         // rectangular grid with width w and height h
         // robot in the south-west corner
-        int w1 = 5;
-        int h1 = 7;
+        //        int w1 = 5;
+        //        int h1 = 7;
         //        Robot robot2 = new Robot(w1, h1, 0, h1 - 1);
         //        challenge2(robot2);
 
         // square nxn grid;
-        int n2 = 6;
-        Robot robot3 = new Robot(n2, n2, 3, 1);
-        challenge3(robot3);
+        //        int n2 = 6;
+        //        Robot robot3 = new Robot(n2, n2, 3, 1);
+        //        challenge3(robot3);
 
         // rectangular grid with width w and height h
         // robot's starting position: 4 over, 2 down
         int w2 = 8;
         int h2 = 4;
-        //        Robot robot4 = new Robot(w2, h2, 4, 2);
-        //        challenge4(robot4);
+        Robot robot4 = new Robot(w2, h2, 7, 3);
+        challenge4(robot4);
     }
 
     private static void challenge1(Robot robot) {
@@ -94,38 +94,32 @@ public class RobotApp {
     }
 
     private static void challenge3(Robot robot) {
-        char nextDirection = 0;
+        char currentDirection = 0;
         int roomDimension = 1;
 
-        boolean northWall = !robot.check('N');
-        boolean eastWall = !robot.check('E');
-        boolean southWall = !robot.check('S');
-        boolean westWall = !robot.check('W');
-        boolean wallPresent = northWall || eastWall || southWall || westWall;
-
         // Get robot to the wall if not already there
-        if (!wallPresent) {
-            nextDirection = 'N';
+        if (allDoorRoom(robot)) {
+            currentDirection = 'N';
 
-            while (robot.check(nextDirection)) {
-                robot.go(nextDirection);
+            while (robot.check(currentDirection)) {
+                robot.go(currentDirection);
             }
         }
 
         // Invert direction of wall to go the other way
         if (!robot.check('N')) {
-            nextDirection = 'S';
+            currentDirection = 'S';
         } else if (!robot.check('E')) {
-            nextDirection = 'W';
+            currentDirection = 'W';
         } else if (!robot.check('S')) {
-            nextDirection = 'N';
+            currentDirection = 'N';
         } else if (!robot.check('W')) {
-            nextDirection = 'E';
+            currentDirection = 'E';
         }
 
         // Walk opposite direction and start dimension counter
-        while (robot.check(nextDirection)) {
-            robot.go(nextDirection);
+        while (robot.check(currentDirection)) {
+            robot.go(currentDirection);
             roomDimension++;
         }
 
@@ -136,14 +130,174 @@ public class RobotApp {
     }
 
     private static void challenge4(Robot robot) {
+        char currentDirection;
 
-        // One side is 2x larger than the other
+        int roomDimension1 = 1;
+        int roomDimension2 = 1;
 
+        // Get robot to the wall if not already there
+        if (allDoorRoom(robot)) {
+            currentDirection = 'N';
 
-        int numberOfRooms = 0;
+            while (robot.check(currentDirection)) {
+                robot.go(currentDirection);
+            }
+        }
+
+        // Need to know which wall I'm at
+        // Todo: Think of the case where you spawn in a corner.
+        // The order of the logic that you set within the wallDirection method
+        // matters, as it will check North, East, South, West, in that order.
+
+        char wallDirection = wallDirection(robot);
+
+        // Invert direction of wall to go the other way
+        currentDirection = invertedDirection(wallDirection);
+
+        // Walk opposite direction and start dimension counter
+        while (robot.check(currentDirection)) {
+            robot.go(currentDirection);
+            roomDimension1++;
+        }
+
+        // As soon as you hit the end of that wall, walk
+        // adjacent direction of previous direction
+        currentDirection = adjacentDirection(currentDirection);
+
+        // If you hit a wall before you can definitively know that
+        // dim 2 is shorter or larger than dim 1, you'll need to
+        // double back and walk until you hit a wall or until you
+        // know that dim2 is larger than dim1
+
+        // Think about the case where you start in a corner
+        // Go to the opposite corner and then go the adjacent way
+        // then need to double back, as it's less than the dim1, but
+        // you already reached the end
+
+        boolean doubledBackedOnWall = false;
+
+        while (roomDimension1 > roomDimension2) {
+            if (doubledBackedOnWall && hitDestinedWall(robot, currentDirection)) {
+                break;
+            }
+
+            if (robot.check(currentDirection)) {
+                robot.go(currentDirection);
+            } else {
+                roomDimension2 = 1;
+                doubledBackedOnWall = true;
+
+                currentDirection = invertedDirection(currentDirection);
+                robot.go(currentDirection);
+            }
+
+            roomDimension2++;
+        }
+
+        // At this point, we can assume that we've hit a wall
+
+        int length = 0;
+        int width = 0;
+
+        if (roomDimension2 > roomDimension1) {
+            length = 2 * roomDimension1;
+            width = roomDimension1;
+        } else {
+            length = roomDimension1;
+            width = roomDimension1 / 2;
+        }
+
+        int numberOfRooms = length * width;
+
         String numberOfMovesExpression = "???";
         String robotOutput = String.format("%d rooms %s moves", numberOfRooms, numberOfMovesExpression);
         robot.say(robotOutput);
+    }
+
+    // Helper Methods
+
+    private static boolean northWall(Robot robot) {
+        return !robot.check('N');
+    }
+
+    private static boolean eastWall(Robot robot) {
+        return !robot.check('E');
+    }
+
+    private static boolean southWall(Robot robot) {
+        return !robot.check('S');
+    }
+
+    private static boolean westWall(Robot robot) {
+        return !robot.check('W');
+    }
+
+    public static boolean northEastCorner(Robot robot) {
+        return northWall(robot) && westWall(robot);
+    }
+
+    public static boolean northWestCorner(Robot robot) {
+        return northWall(robot) && westWall(robot);
+    }
+
+    public static boolean southEastCorner(Robot robot) {
+        return southWall(robot) && eastWall(robot);
+    }
+
+    public static boolean southWestCorner(Robot robot) {
+        return southWall(robot) && westWall(robot);
+    }
+
+    private static boolean hitCorner(Robot robot, char direction) {
+        return northEastCorner(robot) || northWestCorner(robot) || southEastCorner(robot) || southWestCorner(robot);
+    }
+
+    private static boolean hitDestinedWall(Robot robot, char direction) {
+        return switch (direction) {
+            case 'N' -> northWall(robot);
+            case 'E' -> eastWall(robot);
+            case 'S' -> southWall(robot);
+            case 'W' -> westWall(robot);
+            default -> false;
+        };
+    }
+
+    private static boolean allDoorRoom(Robot robot) {
+        return !northWall(robot) && !eastWall(robot) && !southWall(robot) && !westWall(robot);
+    }
+
+    private static char invertedDirection(char direction) {
+        return switch (direction) {
+            case 'N' -> 'S';
+            case 'E' -> 'W';
+            case 'S' -> 'N';
+            case 'W' -> 'E';
+            default -> '0';
+        };
+    }
+
+    private static char adjacentDirection(char direction) {
+        return switch (direction) {
+            case 'N' -> 'E';
+            case 'E' -> 'S';
+            case 'S' -> 'W';
+            case 'W' -> 'N';
+            default -> '0';
+        };
+    }
+
+    private static char wallDirection(Robot robot) {
+        if (northWall(robot)) {
+            return 'N';
+        } else if (eastWall(robot)) {
+            return 'E';
+        } else if (southWall(robot)) {
+            return 'S';
+        } else if (westWall(robot)) {
+            return 'W';
+        }
+
+        return '0';
     }
 
 }
