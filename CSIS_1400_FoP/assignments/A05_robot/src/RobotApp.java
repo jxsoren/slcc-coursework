@@ -36,7 +36,7 @@ public class RobotApp {
         // robot's starting position: 4 over, 2 down
         int w2 = 4;
         int h2 = 8;
-        Robot robot4 = new Robot(w2, h2, 3, 7);
+        Robot robot4 = new Robot(w2, h2, 2, 5);
         challenge4(robot4);
     }
 
@@ -142,41 +142,6 @@ public class RobotApp {
             }
         }
 
-        // Recap of plan:
-
-        // Step 1.
-        //      Get to Wall if not already at wall
-
-        // Step 2.
-        //      Once at wall, choose an adjacent direction
-        //      to keep walking to until you hit a corner
-
-        // Step 3.
-        //      Now you're at a corner
-
-        // At this point, we either spawned in a corner
-        // or we found a wall that isn't a corner
-
-        // If you're at a corner, you'll just need to choose one direction
-        // to walk
-
-        // If you're at a wall that isn't a corner, you'll want to invert
-        // the direction that you came from to record dim1
-
-        //        char wallDirection;
-        //        if (inCorner(robot)) {
-        ////            whichCorner(robot);
-        //
-        ////            wallDirection =
-        //        } else {
-        //            wallDirection = wallDirection(robot);
-        //        }
-
-        // Now that you're at a wall, go the opposite direction of the wall
-        // to record one dimension of the room. This only applies if you're
-        // not at a corner already
-
-
         if (inCorner(robot)) {
             char[] currentCorner = whichCorner(robot);
 
@@ -199,6 +164,35 @@ public class RobotApp {
             }
 
         } else {
+            // Plan if you don't start at a corner:
+            // Step 1:
+            //      Check which wall you're at and then go the opposite
+            //      direction of wall and record that to dim 1
+            // Step 2:
+            //      Once you've hit the opposite wall, pick an adjacent
+            //      direction and then start walking that way
+            //      Step 2.1:
+            //              If you walk for longer than what's recorded
+            //              for dim 1, then you can stop walking, as
+            //              you can assume the rest of the distance is
+            //              2x whatever the dim1 is
+            //      Step 2.2:
+            //              If you hit a wall before you can definitively
+            //              determine that one side is larger than the
+            //              other, then you should go the opposite
+            //              direction of the wall that you just hit and
+            //              start your counter over at 1.
+            //      Step 2.3:
+            //              If you've hit a corner mark this as corner1,
+            //              as it's possible that dim1 was the larger side
+            //              of the rectangle room, so you need to keep
+            //              track of whether you've definitively reached
+            //              one corner already (corner1) and then have
+            //              reached the opposite corner (corner2). In this
+            //              case, you now know that dim1 was the larger
+            //              side, so you can just divide dim1 in half and
+            //              that will be what dim2 should be.
+
             char wallDirection = wallDirection(robot);
             currentDirection = invertedDirection(wallDirection);
             while (robot.check(currentDirection)) {
