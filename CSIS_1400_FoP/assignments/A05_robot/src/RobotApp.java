@@ -34,9 +34,9 @@ public class RobotApp {
 
         // rectangular grid with width w and height h
         // robot's starting position: 4 over, 2 down
-        int w2 = 10;
-        int h2 = 5;
-        Robot robot4 = new Robot(w2, h2, 1, 2);
+        int w2 = 4;
+        int h2 = 8;
+        Robot robot4 = new Robot(w2, h2, 3, 7);
         challenge4(robot4);
     }
 
@@ -142,53 +142,96 @@ public class RobotApp {
             }
         }
 
-        // Todo:
-        //      Think of the case where you spawn in a corner.
-        //      The order of the logic that you set within the wallDirection method
-        //      matters, as it will check North, East, South, West, in that order.
+        // Recap of plan:
 
-        char wallDirection = wallDirection(robot);
+        // Step 1.
+        //      Get to Wall if not already at wall
 
-        // Invert direction of wall to go the other way
-        currentDirection = invertedDirection(wallDirection);
+        // Step 2.
+        //      Once at wall, choose an adjacent direction
+        //      to keep walking to until you hit a corner
 
-        // Walk opposite direction and start dimension counter
-        while (robot.check(currentDirection)) {
-            robot.go(currentDirection);
-            roomDimension1++;
-        }
+        // Step 3.
+        //      Now you're at a corner
 
-        currentDirection = adjacentDirection(currentDirection);
+        // At this point, we either spawned in a corner
+        // or we found a wall that isn't a corner
 
-        boolean doubledBackedOnWall = false;
+        // If you're at a corner, you'll just need to choose one direction
+        // to walk
+
+        // If you're at a wall that isn't a corner, you'll want to invert
+        // the direction that you came from to record dim1
+
+        //        char wallDirection;
+        //        if (inCorner(robot)) {
+        ////            whichCorner(robot);
+        //
+        ////            wallDirection =
+        //        } else {
+        //            wallDirection = wallDirection(robot);
+        //        }
+
+        // Now that you're at a wall, go the opposite direction of the wall
+        // to record one dimension of the room. This only applies if you're
+        // not at a corner already
 
 
-        // Todo:
-        //      Think of this problem more simply. You either need to find a corner
-        //      or walk longer than the current recorded dim1
+        if (inCorner(robot)) {
+            char[] currentCorner = whichCorner(robot);
 
+            char direction1 = currentCorner[0];
+            char direction2 = currentCorner[1];
 
-        while (roomDimension1 >= roomDimension2) {
-            if (doubledBackedOnWall && hitDestinedWall(robot, currentDirection)) {
-                break;
-            }
-
-
-            if (inCorner(robot) && hitDestinedWall(robot, currentDirection)) {
-                break;
-            }
-
-            if (robot.check(currentDirection)) {
+            // Walk opposite of North or South to record dim1
+            currentDirection = invertedDirection(direction1);
+            while (robot.check(currentDirection)) {
                 robot.go(currentDirection);
-            } else {
-                roomDimension2 = 1;
-                doubledBackedOnWall = true;
-
-                currentDirection = invertedDirection(currentDirection);
-                robot.go(currentDirection);
+                roomDimension1++;
             }
 
-            roomDimension2++;
+            // Walk opposite of East or West to record dim2
+            // If you walk longer then dim1, stop walking
+            currentDirection = invertedDirection(direction2);
+            while (robot.check(currentDirection) && roomDimension1 >= roomDimension2) {
+                robot.go(currentDirection);
+                roomDimension2++;
+            }
+
+        } else {
+            char wallDirection = wallDirection(robot);
+            currentDirection = invertedDirection(wallDirection);
+            while (robot.check(currentDirection)) {
+                robot.go(currentDirection);
+                roomDimension1++;
+            }
+
+            currentDirection = adjacentDirection(currentDirection);
+
+            boolean doubledBackedOnWall = false;
+
+            while (roomDimension1 >= roomDimension2) {
+                if (doubledBackedOnWall && hitDestinedWall(robot, currentDirection)) {
+                    break;
+                }
+
+                if (inCorner(robot) && hitDestinedWall(robot, currentDirection)) {
+                    break;
+                }
+
+                if (robot.check(currentDirection)) {
+                    robot.go(currentDirection);
+                } else {
+                    roomDimension2 = 1;
+                    doubledBackedOnWall = true;
+
+                    currentDirection = invertedDirection(currentDirection);
+                    robot.go(currentDirection);
+                }
+
+                roomDimension2++;
+            }
+
         }
 
         int length;
@@ -246,6 +289,38 @@ public class RobotApp {
     private static boolean inCorner(Robot robot) {
         return northEastCorner(robot) || northWestCorner(robot) || southEastCorner(robot) || southWestCorner(robot);
     }
+
+    private static char[] whichCorner(Robot robot) {
+        char[] cornerDirection = new char[2];
+
+        if (northEastCorner(robot)) {
+            cornerDirection[0] = 'N';
+            cornerDirection[1] = 'E';
+        } else if (northWestCorner(robot)) {
+            cornerDirection[0] = 'N';
+            cornerDirection[1] = 'W';
+        } else if (southEastCorner(robot)) {
+            cornerDirection[0] = 'S';
+            cornerDirection[1] = 'E';
+        } else if (southWestCorner(robot)) {
+            cornerDirection[0] = 'S';
+            cornerDirection[1] = 'W';
+        }
+
+        return cornerDirection;
+    }
+
+    //    private static char adjacentCornerDirection(Robot robot, char direction) {
+    //        char[] cornerDirections = whichCorner(robot);
+
+    // If you're in the NorthEast corner, and you were going East
+    // you'd now want to go South
+
+    //        switch (direction) {
+    //            case
+    //        }
+
+    //    }
 
     private static boolean hitDestinedWall(Robot robot, char direction) {
         return switch (direction) {
