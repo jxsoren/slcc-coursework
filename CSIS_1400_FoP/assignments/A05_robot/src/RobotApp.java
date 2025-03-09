@@ -13,8 +13,8 @@ public class RobotApp {
     public static void main(String[] args) {
         // square nxn grid with the robot in the south-west corner
         int n = 5;
-        //        Robot robot1 = new Robot(n, n, 0, n - 1);
-        //        challenge1(robot1);
+        Robot robot1 = new Robot(n, n, 0, n - 1);
+        challenge1(robot1);
 
         // rectangular grid with width w and height h
         // robot in the south-west corner
@@ -23,17 +23,17 @@ public class RobotApp {
         Robot robot2 = new Robot(w1, h1, 0, h1 - 1);
         challenge2(robot2);
 
-        // square nxn grid;
+        // square nxn grid
         int n2 = 6;
-        //        Robot robot3 = new Robot(n2, n2, 3, 1);
-        //        challenge3(robot3);
+        Robot robot3 = new Robot(n2, n2, 3, 1);
+        challenge3(robot3);
 
         // rectangular grid with width w and height h
         // robot's starting position: 4 over, 2 down
         int w2 = 4;
         int h2 = 8;
-        //        Robot robot4 = new Robot(w2, h2, 2, 5);
-        //        challenge4(robot4);
+        Robot robot4 = new Robot(w2, h2, 2, 5);
+        challenge4(robot4);
     }
 
     private static void challenge1(Robot robot) {
