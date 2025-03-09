@@ -11,24 +11,20 @@
 
 public class RobotApp {
     public static void main(String[] args) {
-        // square 4x4 grid to demo how the robot can be controlled
-        //        Robot robot = new Robot(4, 4, 3, 0);
-        //        demo(robot);
-
         // square nxn grid with the robot in the south-west corner
-        //        int n = 5;
+        int n = 5;
         //        Robot robot1 = new Robot(n, n, 0, n - 1);
         //        challenge1(robot1);
 
         // rectangular grid with width w and height h
         // robot in the south-west corner
-        //        int w1 = 5;
-        //        int h1 = 7;
-        //        Robot robot2 = new Robot(w1, h1, 0, h1 - 1);
-        //        challenge2(robot2);
+        int w1 = 5;
+        int h1 = 7;
+        Robot robot2 = new Robot(w1, h1, 0, h1 - 1);
+        challenge2(robot2);
 
         // square nxn grid;
-        //        int n2 = 6;
+        int n2 = 6;
         //        Robot robot3 = new Robot(n2, n2, 3, 1);
         //        challenge3(robot3);
 
@@ -36,13 +32,16 @@ public class RobotApp {
         // robot's starting position: 4 over, 2 down
         int w2 = 4;
         int h2 = 8;
-        Robot robot4 = new Robot(w2, h2, 2, 5);
-        challenge4(robot4);
+        //        Robot robot4 = new Robot(w2, h2, 2, 5);
+        //        challenge4(robot4);
     }
 
     private static void challenge1(Robot robot) {
         int roomHeight = 1;
 
+        // Robot starts at South-West corner
+
+        // Keep walking North until you reach the North wall
         while (robot.check('N')) {
             robot.go('N');
             roomHeight++;
@@ -52,44 +51,37 @@ public class RobotApp {
         // a single dimension to get the amount of rooms (n * n)
         int numberOfRooms = roomHeight * roomHeight;
 
-        // 2(n - 1) = 2n - 2
-        String roomExpression = String.format("%dn-%d", 2, 2);
+        String roomExpression = "n - 1";
         String robotOutput = String.format("%d rooms %s moves", numberOfRooms, roomExpression);
 
         robot.say(robotOutput);
     }
 
     private static void challenge2(Robot robot) {
-        int dim1 = 1;
-        int dim2 = 1;
+        int roomDimension1 = 1;
+        int roomDimension2 = 1;
 
+        // Robot starts at South-West corner
+
+        // Keep walking North until you reach the North wall
         while (robot.check('N')) {
             robot.go('N');
-            dim1++;
+            roomDimension1++;
         }
 
+        // Once you're in the North-West corner, walk East
+        // until you hit the North-East corner
         while (robot.check('E')) {
             robot.go('E');
-            dim2++;
+            roomDimension2++;
         }
 
-        int length;
-        int width;
+        // Multiply dim1 and dim2 together to get the amount of rooms
+        int numberOfRooms = roomDimension1 * roomDimension2;
 
-        if (dim1 > dim2) {
-            length = dim1;
-            width = dim2;
-        } else {
-            length = dim2;
-            width = dim1;
-        }
-
-        int numberOfRooms = length * width;
-
-        // (L - 1) + (W - 1) = (L + W) - 2
-        String numberOfMovesExpression = "(L + W) - 2";
+        // (W - 1) + (H - 1) = (W + H) - 2
+        String numberOfMovesExpression = "(W + H) - 2";
         String robotOutput = String.format("%d rooms %s moves", numberOfRooms, numberOfMovesExpression);
-
         robot.say(robotOutput);
     }
 
@@ -107,15 +99,7 @@ public class RobotApp {
         }
 
         // Invert direction of wall to go the other way
-        if (!robot.check('N')) {
-            currentDirection = 'S';
-        } else if (!robot.check('E')) {
-            currentDirection = 'W';
-        } else if (!robot.check('S')) {
-            currentDirection = 'N';
-        } else if (!robot.check('W')) {
-            currentDirection = 'E';
-        }
+        currentDirection = invertedDirection(currentDirection);
 
         // Walk opposite direction and start dimension counter
         while (robot.check(currentDirection)) {
@@ -123,8 +107,10 @@ public class RobotApp {
             roomDimension++;
         }
 
+        // Square one of the room's dimensions to get number of rooms
         int numberOfRooms = roomDimension * roomDimension;
-        String numberOfMovesExpression = "???";
+
+        String numberOfMovesExpression = "4n - 4";
         String robotOutput = String.format("%d rooms %s moves", numberOfRooms, numberOfMovesExpression);
         robot.say(robotOutput);
     }
@@ -148,15 +134,12 @@ public class RobotApp {
             char direction1 = currentCorner[0];
             char direction2 = currentCorner[1];
 
-            // Walk opposite of North or South to record dim1
             currentDirection = invertedDirection(direction1);
             while (robot.check(currentDirection)) {
                 robot.go(currentDirection);
                 roomDimension1++;
             }
 
-            // Walk opposite of East or West to record dim2
-            // If you walk longer then dim1, stop walking
             currentDirection = invertedDirection(direction2);
             while (robot.check(currentDirection) && roomDimension1 >= roomDimension2) {
                 robot.go(currentDirection);
@@ -164,51 +147,18 @@ public class RobotApp {
             }
 
         } else {
-            // Plan if you don't start at a corner and have reached a wall:
-
-            // Step 1:
-            //      Check which wall you're at and then go the opposite
-            //      direction of wall and record that to dim 1
-
             char wallDirection = wallDirection(robot);
             currentDirection = invertedDirection(wallDirection);
+
             while (robot.check(currentDirection)) {
                 robot.go(currentDirection);
                 roomDimension1++;
             }
 
-            // Step 2:
-            //      Once you've hit the opposite wall, pick an adjacent
-            //      direction and then start walking that way
-            //      Step 2.1:
-            //              If you walk for longer than what's recorded
-            //              for dim 1, then you can stop walking, as
-            //              you can assume the rest of the distance is
-            //              2x whatever the dim1 is
-
             currentDirection = adjacentDirection(currentDirection);
             int cornerCounter = 0;
 
             while (roomDimension1 >= roomDimension2 && cornerCounter < 2) {
-
-                //      Step 2.2:
-                //              If you hit a wall (corner) before you can definitively
-                //              determine that one side is larger than the
-                //              other, then you should go the opposite
-                //              direction of the wall that you just hit and
-                //              start your counter over at 1.
-
-
-                //      Step 2.3:
-                //              If you've hit a corner mark this as corner1,
-                //              as it's possible that dim1 was the larger side
-                //              of the rectangle room, so you need to keep
-                //              track of whether you've definitively reached
-                //              one corner already (corner1) and then have
-                //              reached the opposite corner (corner2). In this
-                //              case, you now know that dim1 was the larger
-                //              side, so you can just divide dim1 in half and
-                //              that will be what dim2 should be.gi
 
                 if (inCorner(robot)) {
                     cornerCounter++;
@@ -224,20 +174,20 @@ public class RobotApp {
 
         }
 
-        int length;
         int width;
+        int height;
 
         if (roomDimension2 > roomDimension1) {
-            length = 2 * roomDimension1;
             width = roomDimension1;
+            height = 2 * roomDimension1;
         } else {
-            length = roomDimension1;
             width = roomDimension1 / 2;
+            height = roomDimension1;
         }
 
-        int numberOfRooms = length * width;
+        int numberOfRooms = height * width;
 
-        String numberOfMovesExpression = "???";
+        String numberOfMovesExpression = "2(W + H - 2)";
         String robotOutput = String.format("%d rooms %s moves", numberOfRooms, numberOfMovesExpression);
         robot.say(robotOutput);
     }
@@ -300,28 +250,6 @@ public class RobotApp {
         return cornerDirection;
     }
 
-    //    private static char adjacentCornerDirection(Robot robot, char direction) {
-    //        char[] cornerDirections = whichCorner(robot);
-
-    // If you're in the NorthEast corner, and you were going East
-    // you'd now want to go South
-
-    //        switch (direction) {
-    //            case
-    //        }
-
-    //    }
-
-    private static boolean hitDestinedWall(Robot robot, char direction) {
-        return switch (direction) {
-            case 'N' -> northWall(robot);
-            case 'E' -> eastWall(robot);
-            case 'S' -> southWall(robot);
-            case 'W' -> westWall(robot);
-            default -> false;
-        };
-    }
-
     private static boolean allDoorRoom(Robot robot) {
         return !northWall(robot) && !eastWall(robot) && !southWall(robot) && !westWall(robot);
     }
@@ -347,10 +275,6 @@ public class RobotApp {
     }
 
     private static char wallDirection(Robot robot) {
-        if (inCorner(robot)) {
-
-        }
-
         if (northWall(robot)) {
             return 'N';
         } else if (eastWall(robot)) {
