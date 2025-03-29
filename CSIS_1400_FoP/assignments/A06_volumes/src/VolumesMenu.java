@@ -50,13 +50,12 @@ public class VolumesMenu {
                     break;
                 case 6:
                     // If it was 6 call the method cone and display the result;‘hard-code’ 6 and 5 as arguments
-                    // Todo: fix the cone method to properly return the correct volume of a cone
                     System.out.printf("cone(6, 5): volume = %.1f%n",
                             Volumes.cone(6, 5));
                     break;
                 default:
                     // If it was any other number print invalid input
-                    System.out.println("invalid number");
+                    System.out.println("invalid input");
                     break;
             }
 
