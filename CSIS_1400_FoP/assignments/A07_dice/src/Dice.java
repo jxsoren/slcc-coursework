@@ -16,6 +16,8 @@ public class Dice {
     // index 7 = dice roll sum of 7
     // index 12 = dice roll sum of 12
     // etc.
+    //  -  -   2     3    4      5     6     7     8     9    10    11    12
+    // [0, 0, 961, 2070, 3042, 4058, 4902, 5964, 4977, 3953, 2999, 2068, 1006]
     private static final int[] rollFrequencyCounts = new int[13];
 
     public static void main(String[] args) {
