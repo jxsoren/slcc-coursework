@@ -126,3 +126,9 @@ MODIFY COLUMN DESCRIPTION CHAR(40);
 # before DESCRIPTION change (should be CHAR(40))
 describe NONGAME;
 
+-- Once you've completed all 9 steps, you'll need to run (copy and paste) the query below. 
+USE TAL; SELECT @i:=0; SELECT @i:=@i+1 AS A,ON_HAND AS B,CATEGORY AS C,ON_HAND_VALUE AS D,PRICE AS E,ITEM_NUM AS F FROM NONGAME ORDER BY DESCRIPTION;
+
+-- Describe NONGAME
+DESCRIBE NONGAME;
+
