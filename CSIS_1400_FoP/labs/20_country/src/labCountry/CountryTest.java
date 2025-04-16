@@ -2,8 +2,8 @@ package labCountry;
 
 public class CountryTest {
     public static void main(String[] args) {
-        Continent1.Continent myContinent = Continent1.Continent.NORTH_AMERICA;
-        Continent1.Continent europe = Continent1.Continent.EUROPE;
+        Continent myContinent = Continent.NORTH_AMERICA;
+        Continent europe = Continent.EUROPE;
 
         Country country1 = new Country("USA", myContinent);
         Country country2 = new Country("Austria", europe);

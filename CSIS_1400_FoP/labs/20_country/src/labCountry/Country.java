@@ -3,11 +3,11 @@ package labCountry;
 public class Country {
     // fields
     private final String name;
-    private final Continent1.Continent continent;
+    private final Continent continent;
 
     // constructor
 
-    public Country(String name, Continent1.Continent continent) {
+    public Country(String name, Continent continent) {
         this.name = name;
         this.continent = continent;
     }
@@ -18,7 +18,7 @@ public class Country {
         return name;
     }
 
-    public Continent1.Continent getContinent() {
+    public Continent getContinent() {
         return continent;
     }
 
