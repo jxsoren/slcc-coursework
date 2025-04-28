@@ -1,7 +1,4 @@
---
 -- Data for table `actor`
---
-
 ('00001','Hanks','Tom',NULL,NULL,'M','1956-07-09',NULL),
 ('00002','Paxton','Bill',NULL,NULL,'M','1955-05-17',NULL),
 ('00003','Bacon','Kevin',NULL,NULL,'M','1958-07-08',NULL),
@@ -103,12 +100,7 @@
 ('00099','Berridge','Elizabeth',NULL,NULL,'F','1962-05-02',NULL),
 ('00100','Jones','Jeffrey',NULL,NULL,'M','1947-09-28',NULL);
 
-
-
---
 -- Data for table `movie`
---
-
 ('001','Apollo 13',1995,'Imagine Entertainment and Universal Pictures',9,2,12.99,9.99),
 ('002','Casablanca',1943,'Warner Brothers',8,3,19.99,14.99),
 ('003','Dirty Harry',1971,'The Malpaso Company',0,0,16.99,16.99),
@@ -134,12 +126,7 @@
 ('023','Batman Begins',2005,'Warner Brothers',1,0,14.99,9.99),
 ('024','Amadeus',1984,'Saul Zaentz Company',11,8,19.99,14.99);
 
-
-
---
 -- Data for table `quote`
---
-
 ('0001','Houston, we have a problem.'),
 ('0002','Play it, Sam.  Play \"As Time Goes By.\"'),
 ('0003','Of all the gin joints in all the towns in all the world, she walks into mine.'),
@@ -184,11 +171,7 @@
 ('0042','I speak for all mediocrities in the world.  I am their champion.  I am their patron saint.'),
 ('0043','Mediocrities everywhere.  I absolve you.  I absolve you.  I absolve you.  I absolve you.  I absolve you all.');
 
-
---
 -- Data for table `role`
---
-
 ('00001','Dorothy Gale','F','00061','016'),
 ('00002','The Wizard of Oz','M','00062','016'),
 ('00003','The Scarecrow','M','00063','016'),
@@ -328,10 +311,7 @@
 ('00137','Constanze Mozart','F','00099','024'),
 ('00138','Emperor Joseph II','M','00100','024');
 
---
 -- Data for table `rolequote`
---
-
 ('00001','0031'),
 ('00001','0033'),
 ('00001','0036'),
