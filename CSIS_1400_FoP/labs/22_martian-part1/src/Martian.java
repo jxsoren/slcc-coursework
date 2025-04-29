@@ -11,6 +11,29 @@ public class Martian {
         count++;
     }
 
+    static Martian[] invade() {
+        Random random = new Random();
+        int randomMartianAmount = random.nextInt(2, 11);
+
+        Martian[] martians = new Martian[randomMartianAmount];
+
+        for (int i = 0; i < randomMartianAmount; i++) {
+            martians[i] = new Martian();
+        }
+
+        return martians;
+    }
+
+    static Martian[] invade(int numOfMartians) {
+        Martian[] martians = new Martian[numOfMartians];
+
+        for (int i = 0; i < numOfMartians; i++) {
+            martians[i] = new Martian();
+        }
+
+        return martians;
+    }
+
     public void doSomething() {
         if (count < 5) {
             System.out.printf("%s is hiding%n", name);
