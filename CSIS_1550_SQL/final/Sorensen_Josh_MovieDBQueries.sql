@@ -66,30 +66,81 @@ FROM Actor
 GROUP BY gender;
 
 -- 11. Find the totalNoms and the maximum number of awardsWon in the Movie table, grouped by totalNoms and ordered by the maximum number of awardsWon.
--- NOTE! - check this again --
+
 SELECT totalNoms, MAX(awardsWon)
 FROM Movie
 GROUP BY totalNoms
-ORDER BY MAX(awardsWon) desc;
+ORDER BY MAX(awardsWon);
 
 -- 12. Find the company, year, and sum of awardsWon for movies, grouped by company and year.
+
+SELECT company, year, SUM(awardsWon)
+FROM Movie
+GROUP BY company, year;
 
 -- 13. Find the actorID, lastName, firstName, middleName, suffix, and birthdate of rows in the Actor table where the gender is F. 
 -- Order the results by the actor’s date of birth.
 
+describe actor;
+
+SELECT actorID, lastName, firstName, middleName, suffix, birthDay
+FROM Actor
+WHERE gender = 'F';
+
+
 -- 14. Find the movieID, title, year, DVDPrice, and half of the DVDPrice (the price for a half-off sale) of movies that have a DVDPrice of at least $20.00.
+
+SELECT movieID, title, year, DVDPrice, (DVDPrice / 2) as "half-off sale"
+FROM Movie
+WHERE DVDPrice >= 20.00;
 
 -- 15. Find the sum of the discount prices of movies made after 1979.
 
+SELECT SUM(discountPrice)
+FROM Movie
+WHERE year > 1979;
+
 -- 16. Find the awards won and the average discount price of movies made before 1980, grouped by awards won.
+
+SELECT awardsWon, AVG(discountPrice)
+FROM Movie
+WHERE year < 1980
+GROUP BY awardsWon;
 
 -- 17. Find the movieID, title, and year of movies, and the roleID and roleName of roles for the join 
 -- of the Movie and Role tables where the gender of the role is female.
 
+SELECT Movie.movieID, Movie.title, Movie.year, Role.roleID, Role.roleName
+FROM Movie
+JOIN Role on Role.movieID = Movie.movieID
+WHERE Role.gender = 'F';
+
 -- 18. Find the roleID, quoteID, and quoteText in the join between the Quote and RoleQuote tables where the roleID is 00001 or 00003.
+
+SELECT RoleQuote.roleID, RoleQuote.quoteID, Quote.quoteText
+FROM RoleQuote
+JOIN Quote on Quote.quoteID = RoleQuote.quoteID
+WHERE RoleQuote.roleID in (1, 3);
 
 -- 19. Write an SQL query to create a view named movie_view that combines information from the actor, movies, role, quote, and role_quote tables. 
 -- Include columns such as actor_name, birthdate, movie_title, release_year, role_name, quote_text, etc., to provide a comprehensive database view.
+
+CREATE VIEW movie_view AS
+SELECT 
+    CONCAT(a.firstName, ' ', a.lastName) AS actor_name,
+    a.birthDay AS birthdate,
+    m.title AS movie_title,
+    m.year AS release_year,
+    r.roleName AS role_name,
+    q.quoteText AS quote_text,
+    m.company,
+    m.totalNoms,
+    m.awardsWon
+FROM Actor a
+JOIN Role r ON a.actorID = r.actorID
+JOIN Movie m ON r.movieID = m.movieID
+LEFT JOIN RoleQuote rq ON r.roleID = rq.roleID
+LEFT JOIN Quote q ON rq.quoteID = q.quoteID;
 
 -- 20. Write SQL statements to create appropriate indexes on the identified columns. Ensure that primary keys already have associated indexes.
 
