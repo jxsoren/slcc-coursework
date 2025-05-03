@@ -11,7 +11,7 @@ Repository containing my coursework and projects from Salt Lake Community Colleg
 - **CSIS 1550 - SQL**
   - Focus: Database fundamentals and SQL programming
   - Tools: MySQL
-  - Topics: Query writing, database design, data manipulation## Repository Structure
+  - Topics: Query writing, database design, data manipulation
 
 ## Repository Structure
 
