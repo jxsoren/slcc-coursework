@@ -21,13 +21,13 @@ Repository containing my coursework and projects from Salt Lake Community Colleg
 slcc-coursework/
 ├── CSIS_1400_FoP/
 │   ├── assignments/
+│   ├── final/
 │   ├── labs/
 │   ├── notes/
-│   └── index.md
 └── CSIS_1550_SQL/
     ├── assignments/
+    ├── final/
     ├── labs/
     ├── notes/
-    └── index.md
 ```
 
