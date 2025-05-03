@@ -49,24 +49,34 @@ CREATE TABLE IF NOT EXISTS Quote(
 
 -- Role Table
 
-CREATE TABLE IF NOT EXISTS Role(
-  roleID INT PRIMARY KEY,
-  roleName VARCHAR(50),
-  gender CHAR(1) CHECK (gender in ('M', 'F')),
-  actorID INT REFERENCES Actor(actorID),
-  movieID INT REFERENCES Movie(movieID)
+CREATE TABLE IF NOT EXISTS Role (
+    roleID INT PRIMARY KEY,
+    roleName VARCHAR(50),
+    gender CHAR(1) CHECK (gender IN ('M' , 'F')),
+    actorID INT,
+    movieID INT,
+    FOREIGN KEY (actorID)
+        REFERENCES Actor (actorID),
+    FOREIGN KEY (movieID)
+        REFERENCES Movie (movieID)
 );
 
-# 16:53:28	CREATE TABLE IF NOT EXISTS Role(   roleID INT PRIMARY KEY,   roleName VARCHAR(50),   gender CHAR(1) CHECK (gender in ('M', 'F')),   actorID INT REFERENCES Actor(actorID),   movieID INT REFERENCES Movie(movieID) )	0 row(s) affected	0.0077 sec
+# 16:29:46 CREATE TABLE IF NOT EXISTS Role (     roleID INT PRIMARY KEY,     roleName VARCHAR(50),     gender CHAR(1) CHECK (gender IN ('M' , 'F')),     actorID INT,     movieID INT,     FOREIGN KEY (actorID)         REFERENCES Actor (actorID),     FOREIGN KEY (movieID)         REFERENCES Movie (movieID) )	0 row(s) affected	0.036 sec
+
 
 -- Role Quote Table
 
-CREATE TABLE IF NOT EXISTS RoleQuote(
-  roleID INT REFERENCES Role(roleID),
-  quoteID INT REFERENCES Quote(quoteID)
+CREATE TABLE IF NOT EXISTS RoleQuote (
+    roleID INT,
+    quoteID INT,
+    PRIMARY KEY (roleID , quoteID),
+    FOREIGN KEY (roleID)
+        REFERENCES Role (roleID),
+    FOREIGN KEY (quoteID)
+        REFERENCES Quote (quoteID)
 );
 
-# 16:53:46	CREATE TABLE IF NOT EXISTS RoleQuote(   roleID INT REFERENCES Role(roleID),   quoteID INT REFERENCES Quote(quoteID) )	0 row(s) affected	0.0047 sec
+# 16:30:58	CREATE TABLE IF NOT EXISTS RoleQuote (     roleID INT,     quoteID INT,     PRIMARY KEY (roleID , quoteID),     FOREIGN KEY (roleID)         REFERENCES Role (roleID),     FOREIGN KEY (quoteID)         REFERENCES Quote (quoteID) )	0 row(s) affected	0.023 sec
 
 -- Actor Data Load
 
