@@ -7,11 +7,13 @@ Repository containing my coursework and projects from Salt Lake Community Colleg
 - **CSIS 1400 - Fundamentals of Programming**
   - Language: Java
   - Topics: Object-oriented programming, control structures, methods
+  - Grade: `A`
 
 - **CSIS 1550 - SQL**
   - Focus: Database fundamentals and SQL programming
   - Tools: MySQL
   - Topics: Query writing, database design, data manipulation
+  - Grade: `A`
 
 ## Repository Structure
 
