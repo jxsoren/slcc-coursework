@@ -1,0 +1,28 @@
+/* Table Styles */
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 8px 12px;
+}
+
+/* Zebra Printed Table Rows */
+
+tr:nth-child(even) {
+    background: lightgray;
+}
+
+/* Main Content Styles */
+
+body {
+    background: white;
+}
+
+.main, h1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
