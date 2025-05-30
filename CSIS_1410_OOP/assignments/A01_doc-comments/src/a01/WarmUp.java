@@ -1,12 +1,11 @@
 package a01;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * @author Josh Sorensen & Eugene An
  * @class CSIS 1410
- * @assignment A01
+ * @assignment A01 - Doc Comments | Review 1400
  */
 
 public class WarmUp {
@@ -62,6 +61,7 @@ public class WarmUp {
         printAssertionMessage("The area of the rectangle that extends from the origin along the x-axis and y-axis to the point (0, -3)", "0", areaResultD);
 
         // !---- Review Arrays ----!
+        printSpacer();
         System.out.println("Review Arrays");
 
         // 1. First Eight Multiples
@@ -69,15 +69,15 @@ public class WarmUp {
 
         int num1 = 3;
         int[] firstEightMultiplesResultA = firstEightMultiples(num1);
-        printAssertionMessage("The first eight multiples of " + num1, "[3, 6, 9, 12, 15, 18, 21, 24]", firstEightMultiplesResultA);
+        printAssertionMessage("The first eight multiples of " + num1, "[3, 6, 9, 12, 15, 18, 21, 24]", Arrays.toString(firstEightMultiplesResultA));
 
         int num2 = -2;
         int[] firstEightMultiplesResultB = firstEightMultiples(num2);
-        printAssertionMessage("The first eight multiples of " + num2, "[-2, -4, -6, -8, -10, -12, -14, -16]", firstEightMultiplesResultB);
+        printAssertionMessage("The first eight multiples of " + num2, "[-2, -4, -6, -8, -10, -12, -14, -16]", Arrays.toString(firstEightMultiplesResultB));
 
         int num3 = 10;
         int[] firstEightMultiplesResultC = firstEightMultiples(num3);
-        printAssertionMessage("The first eight multiples of " + num3, "[10, 20, 30, 40, 50, 60, 70, 80]", firstEightMultiplesResultC);
+        printAssertionMessage("The first eight multiples of " + num3, "[10, 20, 30, 40, 50, 60, 70, 80]", Arrays.toString(firstEightMultiplesResultC));
 
         // 2. First And Last To XXX
         printQuestionNumber("#2");
@@ -114,13 +114,76 @@ public class WarmUp {
         printAssertionMessage("After content(" + Arrays.toString(pointsC) + ") is called, the result", "\"\"", emptyStringResultC);
 
         // !---- Review ArrayList ----!
+        printSpacer();
         System.out.println("Review ArrayList");
 
         // 1. Hyphenate
+        printQuestionNumber("#1");
+        ArrayList<String> syllablesA = new ArrayList<>(Arrays.asList("beau", "ti", "ful"));
+        String hyphenateResultA = hyphenate(syllablesA);
+        printAssertionMessage("After hyphenate(" + syllablesA + ") is called, the result", "beau-ti-ful", hyphenateResultA);
+
+        ArrayList<String> syllablesB = new ArrayList<>(List.of("hi"));
+        String hyphenateResultB = hyphenate(syllablesB);
+        printAssertionMessage("After hyphenate(" + syllablesB + ") is called, the result", "hi", hyphenateResultB);
+
+        ArrayList<String> syllablesC = new ArrayList<>();
+        String hyphenateResultC = hyphenate(syllablesC);
+        String emptyStringHyphenateResultC = "\"" + hyphenateResultC + "\"";
+        printAssertionMessage("After hyphenate(" + syllablesC + ") is called, the result", "\"\"", emptyStringHyphenateResultC);
 
         // 2. More Of The Same
+        printQuestionNumber("#2");
+        char firstCharacter = 'x';
+        ArrayList<String> moreOfTheSameResultA = moreOfTheSame(firstCharacter);
+        String[] expectedMoreOfTheSameResultA = {"x", "xx", "xxx", "xxxx", "xxxxx"};
+        printAssertionMessage("After hyphenate(" + firstCharacter + ") is called, the result", Arrays.toString(expectedMoreOfTheSameResultA), moreOfTheSameResultA.toString());
+
+        char secondCharacter = '~';
+        ArrayList<String> moreOfTheSameResultB = moreOfTheSame(secondCharacter);
+        String[] expectedMoreOfTheSameResultB = {"~", "~~", "~~~", "~~~~", "~~~~~"};
+        printAssertionMessage("After hyphenate(" + secondCharacter + ") is called, the result", Arrays.toString(expectedMoreOfTheSameResultB), moreOfTheSameResultB.toString());
 
         // 3. Take
+        printQuestionNumber("#3");
+        Point[] pointList = {new Point(1, -2), new Point(3, 4), new Point(5, 6), new Point(-7, -8)};
+
+        ArrayList<Point> pointListA = new ArrayList<>();
+        Collections.addAll(pointListA, pointList);
+        int numberOfPointsA = 3;
+        ArrayList<Point> takeResultA = take(pointListA, numberOfPointsA);
+        printAssertionMessage("After hyphenate(" + pointListA + ", " + numberOfPointsA + ") is called, the result", "[(1, -2), (3, 4), (5, 6)]", takeResultA.toString());
+
+        ArrayList<Point> pointListB = new ArrayList<>();
+        Collections.addAll(pointListB, pointList);
+        int numberOfPointsB = 1;
+        ArrayList<Point> takeResultB = take(pointListB, numberOfPointsB);
+        printAssertionMessage("After hyphenate(" + pointListB + ", " + numberOfPointsB + ") is called, the result", "[(1, -2)]", takeResultB.toString());
+
+        ArrayList<Point> pointListC = new ArrayList<>();
+        Collections.addAll(pointListC, pointList);
+        int numberOfPointsC = 0;
+        ArrayList<Point> takeResultC = take(pointListC, numberOfPointsC);
+        printAssertionMessage("After hyphenate(" + pointListC + ", " + numberOfPointsC + ") is called, the result", "[]", takeResultC.toString());
+
+        ArrayList<Point> pointListD = new ArrayList<>();
+        Collections.addAll(pointListD, pointList);
+        int numberOfPointsD = -1;
+
+        try {
+            take(pointListD, numberOfPointsD);
+        } catch (IllegalArgumentException e) {
+            printAssertionMessage("After hyphenate(" + pointListD + ", " + numberOfPointsD + ") is called, the result", "an exception should be thrown", e.getMessage());
+        }
+
+        ArrayList<Point> pointListE = new ArrayList<>();
+        Collections.addAll(pointListE, pointList);
+        int numberOfPointsE = 5;
+        try {
+            take(pointListE, numberOfPointsE);
+        } catch (IllegalArgumentException e) {
+            printAssertionMessage("After hyphenate(" + pointListE + ", " + numberOfPointsE + ") is called, the result", "an exception should be thrown", e.getMessage());
+        }
     }
 
     // !---- Review Objects ----!
@@ -155,7 +218,7 @@ public class WarmUp {
      */
 
     public static double greatestDistanceFromOrigin(Point p1, Point p2, Point p3) {
-        Point origin = new Point(0, 0);
+        Point origin = Point.ORIGIN;
 
         double p1Distance = distance(origin, p1);
         double p2Distance = distance(origin, p2);
@@ -268,17 +331,23 @@ public class WarmUp {
      * If the list is empty, an empty string should be returned.
      * The lists provided as arguments must not be changed in the process.
      *
-     * @param syllables ArrayList of syllable strings // Todo - write a better param description
-     * @return // Todo - write return type here
+     * @param syllables ArrayList of syllable strings
+     * @return a string that includes all syllables of the list separated by dashes
      */
 
     // ArrayList
     public static String hyphenate(ArrayList<String> syllables) {
-        // Todo: Implement Test
+        StringBuilder sb = new StringBuilder();
+        for (String syllable : syllables) {
+            sb.append(syllable);
 
-        // Todo: Implement Method
+            // Add trailing hyphen only if syllable isn't the final one
+            if (!syllable.equals(syllables.getLast())) {
+                sb.append("-");
+            }
+        }
 
-        return new String();
+        return sb.toString();
     }
 
     /**
@@ -287,19 +356,20 @@ public class WarmUp {
      * The second string has length 2 and includes the character twice, etc.
      * The fifth string has length 5 and includes the character five times.
      *
-     * @param c a character // Todo - write a better param description
-     * @return // Todo - write return type here
+     * @param c a character to be repeated
+     * @return a list of type ArrayList<String> that includes five strings
      */
 
     public static ArrayList<String> moreOfTheSame(char c) {
-        // Todo: Implement Test
+        ArrayList<String> strings = new ArrayList<>();
 
-        // Todo: Implement Method
+        for (int i = 1; i <= 5; i++) {
+            String repeatedString = Character.toString(c).repeat(i);
+            strings.add(repeatedString);
+        }
 
-        return new ArrayList<String>();
+        return strings;
     }
-
-    // Good template to use:
 
     /**
      * Creates and returns a new list that includes the first n points from the list
@@ -314,11 +384,17 @@ public class WarmUp {
      */
 
     public static ArrayList<Point> take(ArrayList<Point> list, int n) {
-        // Todo: Implement Test
+        if (n < 0 || n > list.size()) {
+            throw new IllegalArgumentException("The list doesn't have " + n + " elements.");
+        }
 
-        // Todo: Implement Method
+        ArrayList<Point> points = new ArrayList<Point>();
 
-        return new ArrayList<Point>();
+        for (int i = 0; i < n; i++) {
+            points.add(list.get(i));
+        }
+
+        return points;
     }
 
     // Output Helper Methods
@@ -335,12 +411,7 @@ public class WarmUp {
         System.out.printf("\t\t%s is expected to be %s and is actually %.0f%n", subject, expected, actual);
     }
 
-    private static void printAssertionMessage(String subject, String expected, int[] actual) {
-        System.out.printf("\t\t%s is expected to be %s and is actually %s%n", subject, expected, Arrays.toString(actual));
+    private static void printSpacer() {
+        System.out.print("\n\n");
     }
-
-    private static void printAssertionMessage(String subject, String expected, String[] actual) {
-        System.out.printf("\t\t%s is expected to be %s and is actually %s%n", subject, expected, Arrays.toString(actual));
-    }
-
 }
